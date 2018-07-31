@@ -1,0 +1,4 @@
+auto_monitor_get.py 文件从zabbix数据库中读取前一天的服务器的性能峰值数据，并且保存到monitor数据库中。
+auto_monitor_insert.py 从monitor数据库中读取auto_monitor_get.py文件保存的数据，并且计算是否需要报警，将符合报警条件的设备信息存入alarm表中。
+auto_monitor_send.py 从alarm表中读取当天的报警信息，从host表中读取人员和设备关联信息，给各个人员发送报警邮件。
+每天必须先运行auto_monitor_get.py文件，获得数据，然后再依次执行insert和send邮件。
