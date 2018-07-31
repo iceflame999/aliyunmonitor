@@ -30,8 +30,7 @@ def datetime_timestamp(dt):
 
 #获取hostid
 def gethostid():
-    #db = MySQLdb.connect("10.44.13.30","zabbix","zabbix","zabbix")
-    db = MySQLdb.connect("10.44.13.30","zabbix","zabbix","zabbix" )
+    db = MySQLdb.connect()
     cursor = db.cursor()
     sql = "select hostid,host,status from hosts where hostid >10100 and status=0 order by hostid;"
     cursor.execute(sql)
@@ -42,7 +41,7 @@ def gethostid():
     return hostid
 
 def gethostname(hostid):
-    db = MySQLdb.connect("10.44.13.30","zabbix","zabbix","zabbix" )
+    db = MySQLdb.connect()
     cursor = db.cursor()
     sql = "select host from hosts where hostid =" +str(hostid) + ";"
     cursor.execute(sql)
@@ -52,8 +51,7 @@ def gethostname(hostid):
 
 
 def gethostid_avg():
-    #db = MySQLdb.connect("10.44.13.30","zabbix","zabbix","zabbix")
-    db = MySQLdb.connect("10.44.13.30","zabbix","zabbix","monitor" )
+    db = MySQLdb.connect()
     cursor = db.cursor()
     sql = "select distinct hostid from avg_free where date ='"+ str(today_0) + "' order by hostid;"
     cursor.execute(sql)
@@ -67,7 +65,7 @@ def gethostid_avg():
 #从avg数据表读取数据
 def get_avg(hostid,date):
     sql = "SELECT cpu_idle,mem_free,disk_free,avg_tcp from avg_free where hostid = " + str(hostid) + " and date = '" + str(date) + "';"
-    db = MySQLdb.connect("10.44.13.30","zabbix","zabbix","monitor")
+    db = MySQLdb.connect()
     cursor = db.cursor()
     cursor.execute(sql)
     data = cursor.fetchone()
@@ -80,7 +78,7 @@ def get_avg(hostid,date):
 def gettotalmem(hostid):
     today = datetime.date.today()
     today_unix = datetime_timestamp(str(today))
-    db = MySQLdb.connect("10.44.13.30","zabbix","zabbix","zabbix")
+    db = MySQLdb.connect()
     cursor = db.cursor()
     sql = "select itemid from items where hostid =" +str(hostid) + " and key_ ='vm.memory.size[total]';"
     cursor.execute(sql)
@@ -97,7 +95,7 @@ def gettotalmem(hostid):
 def insert_alarm(date,mail):
     k = len(mail)
     i = 0
-    db = MySQLdb.connect("10.44.13.30","zabbix","zabbix","monitor")
+    db = MySQLdb.connect()
     cursor = db.cursor()
     while i<k:
 	yesterday = get_avg(mail[i][4],date)

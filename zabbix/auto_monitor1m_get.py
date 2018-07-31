@@ -30,8 +30,7 @@ def datetime_timestamp(dt):
 
 #获取hostid
 def gethostid():
-    #db = MySQLdb.connect("10.44.13.30","zabbix","zabbix","zabbix")
-    db = MySQLdb.connect("10.44.13.30","zabbix","zabbix","zabbix" )
+    db = MySQLdb.connect()
     cursor = db.cursor()
     sql = "select hostid,host,status from hosts where hostid > 10100 and status=0 order by hostid;"
     cursor.execute(sql)
@@ -42,8 +41,7 @@ def gethostid():
     return hostid
 
 def gethostid_avg():
-    #db = MySQLdb.connect("10.44.13.30","zabbix","zabbix","zabbix")
-    db = MySQLdb.connect("10.44.13.30","zabbix","zabbix","monitor" )
+    db = MySQLdb.connect()
     cursor = db.cursor()
     sql = "select distinct hostid from avg_free order by hostid;"
     cursor.execute(sql)
@@ -67,7 +65,7 @@ def getavg(date,host):#####获取指定日期的峰值
 
 
     # 打开数据库连接
-    db = MySQLdb.connect("10.44.13.30","zabbix","zabbix","zabbix" )
+    db = MySQLdb.connect()
 
     # 获取操作游标 
     cursor = db.cursor()
@@ -158,7 +156,7 @@ def insert_avg(hostid,date,avg_cpu,avg_mem,avg_disk) :
     yesterday = date + datetime.timedelta(days=-1)
     sql = "INSERT into avg_free VALUES(" + str(hostid) + ",'" + str(yesterday) + "'," + str(avg_cpu) + "," + str(avg_mem) + "," + str(avg_disk)+ ");"
 
-    db = MySQLdb.connect("10.44.13.30","zabbix","zabbix","monitor")
+    db = MySQLdb.connect()
     cursor = db.cursor()
     cursor.execute(sql)
     db.commit()
@@ -168,43 +166,20 @@ def insert_avg(hostid,date,avg_cpu,avg_mem,avg_disk) :
 #从avg数据表读取数据
 def get_avg(hostid,date):
     sql = "SELECT cpu_idle,mem_free,disk_free from avg_free where hostid = " + str(hostid) + " and date = '" + str(date) + "';"
-    db = MySQLdb.connect("10.44.13.30","zabbix","zabbix","monitor")
+    db = MySQLdb.connect()
     cursor = db.cursor()
     cursor.execute(sql)
     data = cursor.fetchone()
     db.close()
     return data
 today = datetime.date.today()
-today_0 = today + datetime.timedelta(days=-23)
-today_1 = today + datetime.timedelta(days=-24)
-today_2 = today + datetime.timedelta(days=-25)
-today_3 = today + datetime.timedelta(days=-26)
-today_4 = today + datetime.timedelta(days=-27)
-today_5 = today + datetime.timedelta(days=-28)
-today_6 = today + datetime.timedelta(days=-29)
-today_7 = today + datetime.timedelta(days=-30)
-week = (today_0,today_1,today_2,today_3,today_4,today_5,today_6,today_7)
+
 
 
 hostid = gethostid()
 for host in hostid :
        
-    a = getavg(today_0,host)   #获取设备数据
-    insert_avg(host,today_0,a[0],a[1],a[2])    #插入记录表
-    a = getavg(today_1,host)   #获取设备数据
-    insert_avg(host,today_1,a[0],a[1],a[2])    #插入记录表
-    a = getavg(today_2,host)   #获取设备数据
-    insert_avg(host,today_2,a[0],a[1],a[2])    #插入记录表
-    a = getavg(today_3,host)   #获取设备数据
-    insert_avg(host,today_3,a[0],a[1],a[2])    #插入记录表
-    a = getavg(today_4,host)   #获取设备数据
-    insert_avg(host,today_4,a[0],a[1],a[2])    #插入记录表
-    a = getavg(today_5,host)   #获取设备数据
-    insert_avg(host,today_5,a[0],a[1],a[2])    #插入记录表
-    a = getavg(today_6,host)   #获取设备数据
-    insert_avg(host,today_6,a[0],a[1],a[2])    #插入记录表
-    a = getavg(today_7,host)   #获取设备数据
-    insert_avg(host,today_7,a[0],a[1],a[2])    #插入记录表
+    a = getavg(today,host)   #获取设备数据
 
 
 

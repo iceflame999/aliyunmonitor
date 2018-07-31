@@ -83,8 +83,8 @@ def send_msg(add, mail):
         htmla = htmla + row
         i = i + 1
     html = htmla + htmlb
-    msg_from = 'fuwuqifuzai@roobo.com'  # 发送方邮箱
-    passwd = 'Ai123456'  # 填入发送方邮箱的授权码
+    msg_from = ''  # 发送方邮箱
+    passwd = ''  # 填入发送方邮箱的授权码
     msg_to = add  # 收件人邮箱
 
     subject = "RDS性能监测预警7天"  # 主题
@@ -111,7 +111,7 @@ def send_msg(add, mail):
 
 def get_alarm(name, date):
     sql = "select * from rds_alarm where name = '" + name + "' and date = '" + str(date) + "';"
-    db = MySQLdb.connect("10.44.13.30","zabbix","zabbix","monitor")
+    db = MySQLdb.connect()
     cursor = db.cursor()
     cursor.execute(sql)
     cur1 = cursor.fetchone()
@@ -120,7 +120,7 @@ def get_alarm(name, date):
 
 def get_hosts():
     hosts = []
-    db = MySQLdb.connect("10.44.13.30","zabbix","zabbix","monitor")
+    db = MySQLdb.connect()
     cursor = db.cursor()
     sql = "select `name` from rds_instanceid;"
     cursor.execute(sql)
@@ -139,4 +139,4 @@ for host in hosts:
 	mail.append(mail0)
 if mail:
     print mail
-    send_msg('op@roobo.com', mail)
+    send_msg('', mail)

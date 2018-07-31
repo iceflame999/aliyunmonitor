@@ -8,7 +8,7 @@ import datetime
 # 读取所有在运行RDS服务器ID，该表需要手工维护
 def getinstanceid():
     instanceID = []
-    db = MySQLdb.connect("10.44.13.30","zabbix","zabbix","monitor")
+    db = MySQLdb.connect()
     cursor = db.cursor()
     sql = "select instanceid,`name` from redis_instanceid;"
     cursor.execute(sql)
@@ -22,7 +22,7 @@ def getinstanceid():
 # 读取设备的数据
 def get_value(date, instanceid):
     sql = "SELECT avg_cpu,avg_mem,avg_intranetin,avg_intranetout from redis_avg where instanceid = '" + str(instanceid) + "' and date = '" + str(date) + "';"
-    db = MySQLdb.connect("10.44.13.30","zabbix","zabbix","monitor")
+    db = MySQLdb.connect()
     cursor = db.cursor()
     cursor.execute(sql)
     data = cursor.fetchone()
@@ -39,7 +39,7 @@ def get_value(date, instanceid):
 def insert_alarm(date, alarm):
     k = len(alarm)
     i = 0
-    db = MySQLdb.connect("10.44.13.30","zabbix","zabbix","monitor")
+    db = MySQLdb.connect()
     cursor = db.cursor()
     while i < k:
         sql = "INSERT into redis_alarm VALUES('" + str(alarm[i][1]) + "','" + str(date) + "'," + str(

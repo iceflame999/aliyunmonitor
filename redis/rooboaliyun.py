@@ -8,10 +8,10 @@ import json
 
 class rooboaliyun:
     #连接key
-    access_key = 'LTAIoiTQCqc2BI6m'
-    secret_key = 'd4lmZVXIbvY0S0SUcM27N9iHhzf7jh'
-    region_id = 'cn-beijing'
-    clt = client.AcsClient('LTAIoiTQCqc2BI6m', 'd4lmZVXIbvY0S0SUcM27N9iHhzf7jh', 'cn-beijing')
+    access_key = ''
+    secret_key = ''
+    region_id = ''
+    clt = client.AcsClient('', '', '')
 
     #获取全部实例id
 

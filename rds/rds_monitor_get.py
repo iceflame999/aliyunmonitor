@@ -10,7 +10,7 @@ instanceID = []
 
 # 读取所有在运行RDS服务器ID，该表需要手工维护
 def getinstanceid():
-    db = MySQLdb.connect("10.44.13.30","zabbix","zabbix","monitor")
+    db = MySQLdb.connect()
     cursor = db.cursor()
     sql = "select instanceid,`name` from rds_instanceid;"
     cursor.execute(sql)
@@ -34,7 +34,7 @@ def insert_avg(instanceid, name, date, avg_cpu, avg_mem, avg_disk, avg_iops, avg
     ##
     sql = "INSERT into rds_avg VALUES('" + str(instanceid) + "','" + str(name) + "','" + str(date) + "'," + str(avg_cpu) + "," + str(
         avg_mem) + "," + str(avg_disk) + "," + str(avg_iops) + "," + str(avg_conn) + ");"
-    db = MySQLdb.connect("10.44.13.30","zabbix","zabbix","monitor")
+    db = MySQLdb.connect()
     cursor = db.cursor()
     cursor.execute(sql)
     db.commit()

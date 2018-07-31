@@ -30,8 +30,7 @@ def datetime_timestamp(dt):
 
 #获取hostid
 def gethostid():
-    #db = MySQLdb.connect("10.44.13.30","zabbix","zabbix","zabbix")
-    db = MySQLdb.connect("10.44.13.30","zabbix","zabbix","zabbix" )
+    db = MySQLdb.connect()
     cursor = db.cursor()
     sql = "select hostid,host,status from hosts where hostid > 10100 and status=0 order by hostid;"
     cursor.execute(sql)
@@ -42,8 +41,7 @@ def gethostid():
     return hostid
 
 def gethostid_avg():
-    #db = MySQLdb.connect("10.44.13.30","zabbix","zabbix","zabbix")
-    db = MySQLdb.connect("10.44.13.30","zabbix","zabbix","monitor" )
+    db = MySQLdb.connect()
     cursor = db.cursor()
     sql = "select distinct hostid from avg_free order by hostid;"
     cursor.execute(sql)
@@ -66,7 +64,7 @@ def getavg(date,host):#####获取指定日期的峰值
     yesterday_unix = datetime_timestamp(str(yesterday))
 
     # 打开数据库连接
-    db = MySQLdb.connect("10.44.13.30","zabbix","zabbix","zabbix" )
+    db = MySQLdb.connect()
 
     # 获取操作游标 
     cursor = db.cursor()
@@ -179,7 +177,7 @@ def insert_avg(hostid,date,avg_cpu,avg_mem,avg_disk,avg_tcp) :
     yesterday = date + datetime.timedelta(days=-1)
     sql = "INSERT into avg_free VALUES(" + str(hostid) + ",'" + str(yesterday) + "'," + str(avg_cpu) + "," + str(avg_mem) + "," + str(avg_disk)+ ","+ str(avg_tcp)+ ");"
 
-    db = MySQLdb.connect("10.44.13.30","zabbix","zabbix","monitor")
+    db = MySQLdb.connect()
     cursor = db.cursor()
     cursor.execute(sql)
     db.commit()
@@ -189,22 +187,14 @@ def insert_avg(hostid,date,avg_cpu,avg_mem,avg_disk,avg_tcp) :
 #从avg数据表读取数据
 def get_avg(hostid,date):
     sql = "SELECT cpu_idle,mem_free,disk_free from avg_free where hostid = " + str(hostid) + " and date = '" + str(date) + "';"
-    db = MySQLdb.connect("10.44.13.30","zabbix","zabbix","monitor")
+    db = MySQLdb.connect()
     cursor = db.cursor()
     cursor.execute(sql)
     data = cursor.fetchone()
     db.close()
     return data
 today = datetime.date.today()
-today_0 = today + datetime.timedelta(days=-1)
-today_1 = today + datetime.timedelta(days=-2)
-today_2 = today + datetime.timedelta(days=-3)
-today_3 = today + datetime.timedelta(days=-4)
-today_4 = today + datetime.timedelta(days=-5)
-today_5 = today + datetime.timedelta(days=-6)
-today_6 = today + datetime.timedelta(days=-7)
-today_7 = today + datetime.timedelta(days=-8)
-week = (today_0,today_1,today_2,today_3,today_4,today_5,today_6,today_7)
+
 
 
 hostid = gethostid()
